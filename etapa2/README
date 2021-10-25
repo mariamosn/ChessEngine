@@ -1,0 +1,125 @@
+                                                     _:_
+                                                    '-.-'
+                                           ()      __.'.__
+                                        .-:--:-.  |_______|
+                                 ()      \____/    \=====/
+                                 /\      {====}     )___(
+                      (\=,      //\\      )__(     /_____\
+      __    |'-'-'|  //  .\    (    )    /____\     |   |       Proiect Chess Engine
+     /  \   |_____| (( \_  \    )__(      |  |      |   |	     
+     \__/    |===|   ))  `\_)  /____\     |  |      |   |	    Moșneag Maria 323CA
+    /____\   |   |  (/     \    |  |      |  |      |   |	    Isar Ioana-Teodora 323CA
+     |  |    |   |   | _.-'|    |  |      |  |      |   |	    Tîmbur Maria 323CA
+     |__|    )___(    )___(    /____\    /____\    /_____\
+    (====)  (=====)  (=====)  (======)  (======)  (=======)
+    }===={  }====={  }====={  }======{  }======{  }======={
+   (______)(_______)(_______)(________)(________)(_________)
+
+
+                                  
+
+1. Instrucțiuni de compilare
+	
+	- make
+
+	- xboard -fcp "make run"
+
+----------------------------------------------------------------------------------------------------
+
+2. Structura proiectului.
+
+Clasa Board:
+	-> Cuprinde tabla de joc memorată prin matricea board[8][8] și pe cea anterioară unei mutari
+	reprezentată prin matricea board_prev[8][8].
+
+	-> Valorile pieselor sunt codificate prin numere pozitive (piesele albe) și negative
+	(piesele negre). Fiecare piesă este codificată prin numere de la 1 la 16 (piesele albe),
+	respectiv de la 21 la 36 (piesele negre). Pentru castling se va reține în 6 variabile starea
+	actuală a regilor si a turnurilor pentru fiecare culoare (dacă au fost mutați sau nu). 
+
+	-> Pentru a împiedica ajungerea în șah, se va utiliza tabloul tridimensional attack în cadrul
+	căruia attack[0] reprezintă zonele atacate de alb, iar attack[1] zonele atacate de negru.
+	
+	-> Au fost definiți și vectorii pos (reține poziția fiecărei piese printr-o valoare calculată
+	astfel: linia * 10 + coloana) și val (val[i] reprezintă valoarea piesei cu indexul i). Vectorii
+	pos_prev și val_prev sunt corespondenții lui pos și val pentru mutările anterioare.
+
+
+Clasa Moves:
+	-> Conține funcțiile necesare pentru mutarea tuturor pieselor pe tablă. 
+		+print_move = funcție care afișează mutarea efectuată în forma potrivită comunicării cu
+						xboard
+
+		+print_helper = funcție ajutătoare pentru printarea mutării
+
+		+next_move = funcție care determină următoarea mutare a jucătorului a cărui culoare este
+					   primită ca parametru; pentru aceasta sunt determinate toate mutările posibile
+					   și apoi acestea sunt încercate, rând pe rând, prin intermediul funcției
+					   make_move până când este găsită una validă
+
+		+make_move = funcție care modifică structurile ce reprezintă startea curentă a jocului
+					   (board, pos, val) astfel încat acestea să reflecte starea ulterioară
+					   efectuării mutării primite ca parametru. De asemenea, tot aici se verifică și
+					   dacă mutarea este validă, adică dacă efectuarea acesteia nu determină regele
+					   să ajungă în șah.
+
+		+undo_move = funcție care anulează mutarea precedentă; folosită de make_move în cazul unei
+					   mutări invalide
+
+		+get_moves = funcție care determină piesa actuală și construiește un vector cu toate
+					   mutările posibile ale acesteia prin apelarea funcției corespunzătoare ei
+					   (get_moves_pawn, get_moves_knight, get_moves_bishop, get_moves_rook,
+					   get_moves_queen, get_moves_king)
+	
+În fișierul main, am realizat interacțiunea cu Xboard-ul, care se face prin intermediul stdin și
+stdout. 
+
+----------------------------------------------------------------------------------------------------
+
+3. Cazuri speciale:
+
+	1. Evitarea șah-ului: aceasta este făcuta în cadrul make_move și se bazează pe tabloul attack
+	    		      și verificările posibile bazate pe acesta.
+
+	2. En passant: se folosesc variabile globale ce memorează ultima mutare a fiecarui jucător și,
+		       pe baza acestora, se verifică dacă sunt respectate condițiile necesare efectuării
+		       acestei mutări speciale.
+	
+	3. Rocada mică/mare: se folosesc variabile globale ce memorează activitatea regilor și a
+			turnurilor și, pe baza acestora și cu ajutorul funcțiilor auxiliare helper_castling și
+			check_castling care asigură faptul că între rege și turn nu este nicio piesă și că
+			niciun câmp dintre rege și turn nu este atacat de vreo piesă a adversarului, se verifică
+			dacă sunt respectate condițiile necesare efectuării acestei mutări speciale.
+			Pentru a asigura prioritatea rocadei în cadrul acestei etape, ne-am asigurat că, dacă
+			aceasta este posibilă, este prima mutare adăugată în lista de mutări posibile.
+
+
+	4. Șah: funcția isCheck() verifică dacă regele se află în șah, adică dacă poziția pe care se
+	află este atacată de vreo piesă a oponentului (cu ajutorul tabloului tridimensional attack).
+
+
+----------------------------------------------------------------------------------------------------
+
+3. Surse de inspirație
+
+	https://www.chessprogramming.org/Simplified_Evaluation_Function
+	https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/
+	https://www.gnu.org/software/xboard/engine-intf.html#9
+
+
+----------------------------------------------------------------------------------------------------
+
+4. Responsabilități
+
+	- Moșneag Maria 323CA (căpitan)
+        interfațarea cu XBoard, alegerea reprezentării interne, implementarea mutării pieselor,
+		testare, documentație, gandirea strategie si modelul implementarii, adaugarea de comentarii
+
+	- Isar Ioana-Teodora 323CA
+		organizare cod, scris documentație, alegerea reprezentării interne, implementarea mutării
+       	pieselor, testare, gandirea strategie si modelul implementarii, adaugarea de comentarii
+
+	- Tîmbur Maria 323CA
+		Makefile, scris documentație, alegerea reprezentării interne, implementarea mutării 
+		pieselor, testare, gandirea strategie si modelul implementarii, adaugarea de comentarii
+ 

@@ -1,0 +1,70 @@
+                                                     _:_
+                                                    '-.-'
+                                           ()      __.'.__
+                                        .-:--:-.  |_______|
+                                 ()      \____/    \=====/
+                                 /\      {====}     )___(
+                      (\=,      //\\      )__(     /_____\
+      __    |'-'-'|  //  .\    (    )    /____\     |   |       Proiect Chess Engine
+     /  \   |_____| (( \_  \    )__(      |  |      |   |	     
+     \__/    |===|   ))  `\_)  /____\     |  |      |   |	    Moșneag Maria 323CA
+    /____\   |   |  (/     \    |  |      |  |      |   |	    Isar Ioana-Teodora 323CA
+     |  |    |   |   | _.-'|    |  |      |  |      |   |	    Tîmbur Maria 323CA
+     |__|    )___(    )___(    /____\    /____\    /_____\
+    (====)  (=====)  (=====)  (======)  (======)  (=======)
+    }===={  }====={  }====={  }======{  }======{  }======={
+   (______)(_______)(_______)(________)(________)(_________)
+
+
+                                  
+
+1. Instrucțiuni de compilare
+	
+	- make
+
+	- kxboard -fcp "make run" -debug 
+
+2. Structura proiectului.
+
+	Clasa Board cuprinde tabla de joc memorată prin matricea board[8][8]. Piesele sunt codificate
+prin numere pozitive (piesele albe) și negative (piesele negre). Inițializarea acesteia se
+realizează în O(1), la primirea comenzii "new", prin apelarea funcției initialise_board() care
+plasează în cele 8x8 pătrate valorile corespunzătoare pieselor de pe tablă, respectiv spațiilor
+neocupate.
+
+	Clasa Moves conține funcțiile necesare pentru mutarea pionului pe tablă. Move_pawn va primi
+coordonatele, culoarea pionului și starea actuaăa a tablei de joc. În cazul unei promovări sau
+capturări, pionul va ceda partida și jocul se va termina. Altfel, se alege pionul care trebuie mutat
+în funcție de culoare. Se disting două situații: dacă pionul are posibilitatea capturării altei
+piese (caz în care se mută pe diagonală) sau dacă doar înaintează un pătrat înainte. În ambele
+cazuri, se verifică dacă pionul a ajuns cumva pe ultima linie, caz în care acesta va fi promovat,
+urmând să fie înlocuit de o regină. Dacă nu mai există mutari disponibile, partida este cedată.
+Pentru afișarea mutărilor, se utilizează functia print_move().
+
+	În fișierul main, am realizat interacțiunea cu Xboard-ul, care se face prin intermediul stdin și
+stdout. De asemenea, pentru această etapă, am ales câte un pion din fiecare culoare care va urma să
+facă mutari. 
+
+3. Complexități
+
+	Complexitatea algoritmului de mutare a unei piese în această etapă este O(1), întrucat se
+efectueaza doar mutarea unui pion.
+
+4. Surse de inspirație
+
+	https://www.chessprogramming.org/Simplified_Evaluation_Function
+	https://www.freecodecamp.org/news/simple-chess-ai-step-by-step-1d55a9266977/
+	https://www.gnu.org/software/xboard/engine-intf.html#9
+
+5. Responsabilități
+
+	- Moșneag Maria 323CA (căpitan)
+        implementarea interfațării cu XBoard, alegerea reprezentării interne, implementarea mutării
+        unui pion, testare
+	- Isar Ioana-Teodora 323CA
+		organizare cod, scris documentație, alegerea reprezentării interne, implementarea mutării
+        unui pion, testare
+	- Tîmbur Maria 323CA
+		Makefile, scris documentație, alegerea reprezentării interne, implementarea mutării unui
+		pion, testare
+
